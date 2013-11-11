@@ -24,6 +24,8 @@ setup(
     version=threetaps.__version__,
     description='3taps Python API Client.',
     long_description=readme,
+    author='Michael Kolodny',
+    author_email='michaelckolodny@gmail.com',
     packages=['threetaps'],
     license=license,
 )
