@@ -9,6 +9,8 @@ api.
 
 """
 
+import inspect
+
 
 class Threetaps(object):
     """A 3taps API wrapper."""
@@ -21,7 +23,23 @@ class Threetaps(object):
         # 3taps API auth token
         self.auth_token = auth_token
 
-    class Search(object):
+        # dynamically attach endpoints
+        self._attach_endpoints()
+
+    def _attach_endpoints(self):
+        """Dynamically attach endpoints to this client."""
+
+        for name, endpoint in inspect.getmembers(self):
+            if inspect.isclass(endpoint) \
+                    and issubclass(endpoint, self._Endpoint) \
+                    and (endpoint is not self._Endpoint):
+                setattr(self, endpoint.name, endpoint)
+
+    class _Endpoint(object):
+        """Base class for endpoints."""
+
+
+    class Search(_Endpoint):
         """3taps Search API endpoints.
 
         Logical Operators:
@@ -42,6 +60,8 @@ class Threetaps(object):
         postings within a given radius from a geographic point.
         """
 
+        name = 'search'
+
         def search():
             """Search the 3taps database of postings."""
 
@@ -49,8 +69,10 @@ class Threetaps(object):
             """Count the number of postings matching a search."""
 
 
-    class Polling(object):
+    class Polling(_Endpoint):
         """3taps Polling API endpoints."""
+
+        name = 'polling'
 
         def anchor():
             """Find the value to use to find postings since a given time."""
@@ -59,8 +81,10 @@ class Threetaps(object):
             """Retrieve postings that have changed since the last poll."""
 
 
-    class Reference(object):
+    class Reference(_Endpoint):
         """3taps Reference API endpoints."""
+
+        name = 'reference'
 
         def sources():
             """Get a list of 3taps data sources."""

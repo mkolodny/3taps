@@ -19,3 +19,5 @@ __version__ = '0.1dev'
 __author__ = 'Michael Kolodny'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2013 Michael Kolodny'
+
+from .client import Threetaps
