@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# (c) 2013 Michael Kolodny
 
 """
 threetaps.models

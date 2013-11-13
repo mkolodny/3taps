@@ -9,20 +9,17 @@ api.
 
 """
 
+from __future__ import unicode_literals
 import inspect
 import json
+import urllib2
 import urllib
-import logging
-
-logging.basicConfig()
-logger = logging.getLogger(__name__)
 
 
 class Threetaps(object):
     """A 3taps API wrapper."""
 
-    __attrs__ = [
-        'auth_token']
+    __attrs__ = ['auth_token']
 
     def __init__(self, auth_token):
 
@@ -39,7 +36,7 @@ class Threetaps(object):
             if (inspect.isclass(endpoint) and
                     issubclass(endpoint, self._Endpoint) and
                     endpoint is not self._Endpoint):
-                endpoint_instance = endpoint()
+                endpoint_instance = endpoint(self.requester)
                 setattr(self, endpoint.name, endpoint_instance)
 
     class Requester(object):
@@ -49,7 +46,7 @@ class Threetaps(object):
 
             self.auth_token = auth_token
 
-        def GET(self, url, params):
+        def GET(self, url, params={}):
             """Make a GET request to 3taps.
 
             :param url: String. 3taps endpoint.
@@ -57,35 +54,45 @@ class Threetaps(object):
             """
             params['auth_token'] = self.auth_token
             full_url = '{}?{}'.format(url, urllib.urlencode(params))
-            connection = urllib.urlopen(full_url)
-            if not 200 <= connection.code < 300:
-                logger.error('Request failed.')
-                return None
-            response = connection.read()
-            connection.close()
-            return json.loads(response)
+            request = urllib2.Request(full_url)
+
+            try:
+                f = urllib2.urlopen(request)
+                response = json.loads(f.read())
+            except (urllib2.HTTPError, ValueError) as err:
+                response = {'error': err}
+
+            return response
 
 
     class _Endpoint(object):
         """Base class for endpoints."""
 
-        # TODO: self.requester
+        def __init__(self, requester):
+
+            self.requester = requester
 
 
     class Search(_Endpoint):
-        """3taps Search API endpoints."""
+        """Base class for endpoints."""
 
         name = 'search'
+        url = 'http://search.3taps.com'
 
-        def search(self):
-            """Search the 3taps database of postings."""
+        def search(self, params={}):
+            """Search the 3taps database of postings.
+            Returns :class:`Search <Search` object.
+            """
+            return self.requester.GET(self.url, params)
 
-        def count(self):
+        def count(self, params, field):
             """Count the number of postings matching a search.
             Returns :class:`Count <Count>` object.
 
             :param field: String. Field to use for calculating the count.
             """
+            params['count'] = field
+            return self.requester.GET(self.url, params)
 
 
     class Polling(_Endpoint):
