@@ -13,7 +13,9 @@ from __future__ import unicode_literals
 import inspect
 import json
 import urllib2
-import urllib
+from urllib import urlencode
+from urlparse import urljoin
+import calendar
 
 
 class Threetaps(object):
@@ -53,7 +55,7 @@ class Threetaps(object):
             :param params: Dictionary. Params to send to 3taps.
             """
             params['auth_token'] = self.auth_token
-            full_url = '{}?{}'.format(url, urllib.urlencode(params))
+            full_url = '{}?{}'.format(url, urlencode(params))
             request = urllib2.Request(full_url)
 
             try:
@@ -97,12 +99,33 @@ class Threetaps(object):
         """3taps Polling API endpoints."""
 
         name = 'polling'
+        url = 'http://polling.3taps.com'
 
-        def anchor(self):
-            """Find the value to use to find postings since a given time."""
+        def anchor(self, utc_date):
+            """Get the value to use to find postings since `utc_date`.
 
-        def poll(self):
+            :param dt: UTC Datetime <datetime> object. Start-time for finding
+                postings.
+            """
+            url = urljoin(self.url, 'anchor')
+
+            # set anchor timestamp
+            params = {'timestamp': self.timestamp_from_utc(utc_date)}
+
+            return self.requester.GET(url, params)
+
+        def poll(self, params={}):
             """Retrieve postings that have changed since the last poll."""
+
+            url = urljoin(self.url, 'poll')
+            return self.requester.GET(url, params)
+
+        def timestamp_from_utc(self, utc_date):
+            """Convert a UTC date object to a UTC timestamp.
+            Returns an Integer representing the number of seconds since the
+            epoch.
+            """
+            return calendar.timegm(utc_date.timetuple())
 
 
     class Reference(_Endpoint):

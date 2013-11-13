@@ -8,6 +8,8 @@ from __future__ import unicode_literals
 import unittest
 import os
 import json
+from datetime import datetime
+from urlparse import urljoin
 import httpretty
 
 import threetaps
@@ -24,7 +26,7 @@ class BaseTestCase(unittest.TestCase):
         self.params = {'auth_token': AUTH_TOKEN}
 
         # default http response body
-        self.body = '[]'
+        self.body = []
         self.jbody = json.dumps(self.body)
 
         # mock http requests
@@ -121,18 +123,69 @@ class SearchTestCase(BaseTestCase):
                                          params=self.params)
         self.assertEqual(response, self.body)
 
+    # TODO: get next page
+
 
 class PollingTestCase(BaseTestCase):
 
-     def setUp(self):
+    def setUp(self):
         self.uri = 'http://polling.3taps.com'
 
         super(PollingTestCase, self).setUp()
 
-     def test_entry_points(self):
+    def test_entry_points(self):
 
         self.api.polling.anchor
         self.api.polling.poll
+
+    def register_uri(self, uri):
+        uri = urljoin(self.uri, uri)
+        httpretty.reset()
+        httpretty.register_uri(httpretty.GET, uri,
+                               body=self.jbody)
+
+    def test_anchor(self):
+        # mock the request
+        self.register_uri('anchor')
+
+        timestamp = 1384365735
+        utc_date = datetime.utcfromtimestamp(timestamp)
+        response = self.api.polling.anchor(utc_date)
+
+        # response
+        self.assertEqual(response, self.body)
+
+        # timestamp should be included in the params
+        self.params['timestamp'] = str(timestamp)
+        self.assertEqual(get_last_query(), self.params)
+
+    def test_poll_defaults(self):
+        # mock the request
+        self.register_uri('poll')
+
+        response = self.api.polling.poll()
+
+        # response
+        self.assertEqual(response, self.body)
+
+        # request
+        self.assertEqual(get_last_query(), self.params)
+
+    def test_poll_query(self):
+        # mock the request
+        self.register_uri('poll')
+
+        # query
+        params = {'anchor': 'awoiefj'}
+
+        response = self.api.polling.poll(params)
+
+        # response
+        self.assertEqual(response, self.body)
+
+        # the query should be added to the request
+        self.params['anchor'] = params['anchor']
+        self.assertEqual(get_last_query(), self.params)
 
 
 class ReferenceTestCase(BaseTestCase):
