@@ -80,14 +80,12 @@ class Threetaps(object):
         url = 'http://search.3taps.com'
 
         def search(self, params={}):
-            """Search the 3taps database of postings.
-            Returns :class:`Search <Search` object.
-            """
+            """Search the 3taps database of postings."""
+
             return self.requester.GET(self.url, params)
 
-        def count(self, params, field):
+        def count(self, field, params={}):
             """Count the number of postings matching a search.
-            Returns :class:`Count <Count>` object.
 
             :param field: String. Field to use for calculating the count.
             """

@@ -103,16 +103,23 @@ class SearchTestCase(BaseTestCase):
         self.assertEqual(response, self.body)
         self.assertEqual(get_last_query(), self.params)
 
-    def test_count_query(self):
-        self.params['id'] = '234567'
+    def test_count_defaults(self):
         count_field = 'source'
 
-        response = self.api.search.count(self.params, count_field)
+        response = self.api.search.count(count_field)
         self.assertEqual(response, self.body)
 
         # field should be included in the params
-        self.assertEqual(self.params['count'], count_field)
+        self.params['count'] = count_field
         self.assertEqual(get_last_query(), self.params)
+
+    def test_count_query(self):
+        self.params['id'] = 1234567
+        count_field = 'source'
+
+        response = self.api.search.count(count_field,
+                                         params=self.params)
+        self.assertEqual(response, self.body)
 
 
 class PollingTestCase(BaseTestCase):
