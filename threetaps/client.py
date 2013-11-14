@@ -74,10 +74,13 @@ class Threetaps(object):
 
             self.requester = requester
 
-        def _GET(self, endpoint='', params={}):
-            """Get a list of references by `endpoint`."""
+        def _GET(self, path='', params={}):
+            """Make a GET request to the current endpoint.
 
-            url = urljoin(self.url, endpoint)
+            :param path: String. Path to append to the endpoint url.
+            :param params: Dictionary. Params to send to 3taps.
+            """
+            url = urljoin(self.url, path)
             return self.requester.GET(url, params)
 
 
