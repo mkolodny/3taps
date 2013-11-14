@@ -38,10 +38,16 @@ class BaseTestCase(unittest.TestCase):
         httpretty.disable()
         httpretty.reset()
 
+    def get_last_query(self):
+        return {key: val[0] for key, val in
+                httpretty.last_request().querystring.items()}
 
-def get_last_query():
-    return {key: val[0] for key, val in
-            httpretty.last_request().querystring.items()}
+    def register_uri(self, uri):
+        uri = urljoin(self.uri, uri)
+        httpretty.reset()
+        httpretty.register_uri(httpretty.GET, uri,
+                               body=self.jbody)
+
 
 class RequesterTestCase(BaseTestCase):
 
@@ -57,7 +63,7 @@ class RequesterTestCase(BaseTestCase):
         response = self.api.requester.GET(self.uri, self.params)
 
         self.assertEqual(response, self.body)
-        self.assertEqual(get_last_query(), self.params)
+        self.assertEqual(self.get_last_query(), self.params)
 
     def test_bad_get_request(self):
         # mock bad status code
@@ -95,7 +101,7 @@ class SearchTestCase(BaseTestCase):
         response = self.api.search.search()
 
         self.assertEqual(response, self.body)
-        self.assertEqual(get_last_query(), self.params)
+        self.assertEqual(self.get_last_query(), self.params)
 
     def test_search_query(self):
         self.params['id'] = '234567'
@@ -103,7 +109,7 @@ class SearchTestCase(BaseTestCase):
         response = self.api.search.search(self.params)
 
         self.assertEqual(response, self.body)
-        self.assertEqual(get_last_query(), self.params)
+        self.assertEqual(self.get_last_query(), self.params)
 
     def test_count_defaults(self):
         count_field = 'source'
@@ -113,7 +119,7 @@ class SearchTestCase(BaseTestCase):
 
         # field should be included in the params
         self.params['count'] = count_field
-        self.assertEqual(get_last_query(), self.params)
+        self.assertEqual(self.get_last_query(), self.params)
 
     def test_count_query(self):
         self.params['id'] = 1234567
@@ -138,12 +144,6 @@ class PollingTestCase(BaseTestCase):
         self.api.polling.anchor
         self.api.polling.poll
 
-    def register_uri(self, uri):
-        uri = urljoin(self.uri, uri)
-        httpretty.reset()
-        httpretty.register_uri(httpretty.GET, uri,
-                               body=self.jbody)
-
     def test_anchor(self):
         # mock the request
         self.register_uri('anchor')
@@ -157,7 +157,7 @@ class PollingTestCase(BaseTestCase):
 
         # timestamp should be included in the params
         self.params['timestamp'] = str(timestamp)
-        self.assertEqual(get_last_query(), self.params)
+        self.assertEqual(self.get_last_query(), self.params)
 
     def test_poll_defaults(self):
         # mock the request
@@ -169,7 +169,7 @@ class PollingTestCase(BaseTestCase):
         self.assertEqual(response, self.body)
 
         # request
-        self.assertEqual(get_last_query(), self.params)
+        self.assertEqual(self.get_last_query(), self.params)
 
     def test_poll_query(self):
         # mock the request
@@ -185,23 +185,96 @@ class PollingTestCase(BaseTestCase):
 
         # the query should be added to the request
         self.params['anchor'] = params['anchor']
-        self.assertEqual(get_last_query(), self.params)
+        self.assertEqual(self.get_last_query(), self.params)
 
 
 class ReferenceTestCase(BaseTestCase):
 
-     def setUp(self):
-        self.uri = 'http://reference.3taps.com/sources'
+    def setUp(self):
+        self.uri = 'http://reference.3taps.com'
 
         super(ReferenceTestCase, self).setUp()
 
-     def test_entry_points(self):
+    def test_entry_points(self):
 
         self.api.reference.sources
         self.api.reference.category_groups
         self.api.reference.categories
         self.api.reference.locations
         self.api.reference.location_lookup
+
+    def test_reference_sources(self):
+        # mock the request
+        self.register_uri('sources')
+
+        response = self.api.reference.sources()
+
+        # response
+        self.assertEqual(response, self.body)
+
+    def test_reference_category_groups(self):
+        # mock the request
+        self.register_uri('category_groups')
+
+        response = self.api.reference.category_groups()
+
+        # response
+        self.assertEqual(response, self.body)
+
+    def test_reference_categories(self):
+        # mock the request
+        self.register_uri('categories')
+
+        response = self.api.reference.categories()
+
+        # response
+        self.assertEqual(response, self.body)
+
+    def test_reference_locations_defaults(self):
+        # mock the request
+        self.register_uri('locations')
+
+        level = 'country'
+        response = self.api.reference.locations(level)
+
+        # response
+        self.assertEqual(response, self.body)
+
+        # request
+        self.params['level'] = level
+        self.assertEqual(self.get_last_query(), self.params)
+
+    def test_reference_locations_query(self):
+        # mock the request
+        self.register_uri('locations')
+
+        # query
+        params = {'country': 'awfeaw'}
+
+        level = 'country'
+        response = self.api.reference.locations(level, params)
+
+        # response
+        self.assertEqual(response, self.body)
+
+        # request
+        self.params['level'] = level
+        self.params['country'] = params['country']
+        self.assertEqual(self.get_last_query(), self.params)
+
+    def test_reference_location_lookup_defaults(self):
+        # mock the request
+        self.register_uri('location/lookup')
+
+        code = 'oaiwjef'
+        response = self.api.reference.location_lookup(code)
+
+        # response
+        self.assertEqual(response, self.body)
+
+        # request
+        self.params['code'] = code
+        self.assertEqual(self.get_last_query(), self.params)
 
 
 if __name__ == '__main__':

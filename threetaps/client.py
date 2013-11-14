@@ -74,6 +74,12 @@ class Threetaps(object):
 
             self.requester = requester
 
+        def _GET(self, endpoint='', params={}):
+            """Get a list of references by `endpoint`."""
+
+            url = urljoin(self.url, endpoint)
+            return self.requester.GET(url, params)
+
 
     class Search(_Endpoint):
         """Base class for endpoints."""
@@ -84,7 +90,7 @@ class Threetaps(object):
         def search(self, params={}):
             """Search the 3taps database of postings."""
 
-            return self.requester.GET(self.url, params)
+            return self._GET(self.url, params)
 
         def count(self, field, params={}):
             """Count the number of postings matching a search.
@@ -92,7 +98,7 @@ class Threetaps(object):
             :param field: String. Field to use for calculating the count.
             """
             params['count'] = field
-            return self.requester.GET(self.url, params)
+            return self._GET(self.url, params)
 
 
     class Polling(_Endpoint):
@@ -112,13 +118,13 @@ class Threetaps(object):
             # set anchor timestamp
             params = {'timestamp': self.timestamp_from_utc(utc_date)}
 
-            return self.requester.GET(url, params)
+            return self._GET(url, params)
 
         def poll(self, params={}):
             """Retrieve postings that have changed since the last poll."""
 
             url = urljoin(self.url, 'poll')
-            return self.requester.GET(url, params)
+            return self._GET(url, params)
 
         def timestamp_from_utc(self, utc_date):
             """Convert a UTC date object to a UTC timestamp.
@@ -132,18 +138,37 @@ class Threetaps(object):
         """3taps Reference API endpoints."""
 
         name = 'reference'
+        url = 'http://reference.3taps.com'
 
         def sources(self):
             """Get a list of 3taps data sources."""
 
+            return self._GET('sources')
+
         def category_groups(self):
             """Get a list of 3taps category groups."""
+
+            return self._GET('category_groups')
 
         def categories(self):
             """Get a list of 3taps categories."""
 
-        def locations(self):
-            """Get a list of 3taps locations."""
+            return self._GET('categories')
 
-        def location_lookup(self):
-            """Get the details for a location based on the 3taps location code."""
+        def locations(self, level, params={}):
+            """Get a list of 3taps locations.
+
+            :param level: String. The level of the desired locations.
+                Options: 'country', 'state', 'metro', 'region', 'county',
+                         'city', 'locality', 'zipcode'.
+            """
+            params['level'] = level
+            return self._GET('locations', params)
+
+        def location_lookup(self, code):
+            """Get the details for a location based on the 3taps location
+            code.
+
+            :param code: String. 3taps location code.
+            """
+            return self._GET('location/lookup', {'code': code})
