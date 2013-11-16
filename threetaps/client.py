@@ -119,7 +119,7 @@ class Threetaps(object):
             url = urljoin(self.url, 'anchor')
 
             # set anchor timestamp
-            params = {'timestamp': self.timestamp_from_utc(utc_date)}
+            params = {'timestamp': self._timestamp_from_utc(utc_date)}
 
             return self._GET(url, params)
 
@@ -129,7 +129,7 @@ class Threetaps(object):
             url = urljoin(self.url, 'poll')
             return self._GET(url, params)
 
-        def timestamp_from_utc(self, utc_date):
+        def _timestamp_from_utc(self, utc_date):
             """Convert a UTC date object to a UTC timestamp.
             Returns an Integer representing the number of seconds since the
             epoch.
