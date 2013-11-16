@@ -26,7 +26,7 @@ setup(
     long_description=readme,
     author='Michael Kolodny',
     author_email='michaelckolodny@gmail.com',
-    url='https://github.com/mkolodny/3taps-python-client',
+    url='https://github.com/mkolodny/3taps',
     packages=['threetaps'],
     license=license,
 )
