@@ -12,10 +12,15 @@ api.
 from __future__ import unicode_literals
 import inspect
 import json
-import urllib2
-from urllib import urlencode
-from urlparse import urljoin
 import calendar
+try:
+    from urllib2 import Request, HTTPError, urlopen
+    from urllib import urlencode
+    from urlparse import urljoin
+except ImportError:
+    from urllib.request import Request, urlopen
+    from urllib.parse import urlencode, urljoin
+    from urllib.error import HTTPError
 
 
 class Threetaps(object):
@@ -56,12 +61,12 @@ class Threetaps(object):
             """
             params['auth_token'] = self.auth_token
             full_url = '{}?{}'.format(url, urlencode(params))
-            request = urllib2.Request(full_url)
+            request = Request(full_url)
 
             try:
-                f = urllib2.urlopen(request)
+                f = urlopen(request)
                 response = json.loads(f.read())
-            except (urllib2.HTTPError, ValueError) as err:
+            except (HTTPError, ValueError) as err:
                 response = {'error': err}
 
             return response
