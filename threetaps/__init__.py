@@ -4,8 +4,8 @@
 3taps API client
 ~~~~~~~~~~~~~~~~
 
-3taps-python-client is a library, written in Python, which makes
-interacting with the 3taps API simple.
+3taps is a library, written in Python, which makes interacting
+with the 3taps API simple.
 
 Basic usage:
 
@@ -15,7 +15,7 @@ Basic usage:
 """
 
 __title__ = 'threetaps'
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 __author__ = 'Michael Kolodny'
 __license__ = 'MIT'
 __copyright__ = 'Copyright 2013 Michael Kolodny'
