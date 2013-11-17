@@ -22,7 +22,7 @@ with open('LICENSE') as f:
 setup(
     name='threetaps',
     version=threetaps.__version__,
-    description='3taps Python API Client.',
+    description='3taps API Client.',
     long_description=readme,
     author='Michael Kolodny',
     author_email='michaelckolodny@gmail.com',
