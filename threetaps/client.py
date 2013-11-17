@@ -14,13 +14,10 @@ import inspect
 import json
 import calendar
 try:
-    from urllib2 import Request, HTTPError, urlopen
-    from urllib import urlencode
     from urlparse import urljoin
 except ImportError:
-    from urllib.request import Request, urlopen
-    from urllib.parse import urlencode, urljoin
-    from urllib.error import HTTPError
+    from urllib.parse import urljoin
+import requests
 
 
 class Threetaps(object):
@@ -60,16 +57,14 @@ class Threetaps(object):
             :param params: Dictionary. Params to send to 3taps.
             """
             params['auth_token'] = self.auth_token
-            full_url = '{}?{}'.format(url, urlencode(params))
-            request = Request(full_url)
-
+            response = requests.get(url, params=params)
+            if response.status_code != 200:
+                error = 'HTTPError: {}'.format(response.status_code)
+                return {'error': error}
             try:
-                f = urlopen(request)
-                response = json.loads(f.read())
-            except (HTTPError, ValueError) as err:
-                response = {'error': err}
-
-            return response
+                return response.json()
+            except ValueError as err:
+                return {'error': err}
 
 
     class _Endpoint(object):

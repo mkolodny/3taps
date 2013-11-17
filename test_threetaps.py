@@ -9,7 +9,10 @@ import unittest
 import os
 import json
 from datetime import datetime
-from urlparse import urljoin
+try:
+    from urlparse import urljoin
+except ImportError:
+    from urllib.parse import urljoin
 import httpretty
 
 import threetaps

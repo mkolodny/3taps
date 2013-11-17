@@ -28,5 +28,6 @@ setup(
     author_email='michaelckolodny@gmail.com',
     url='https://github.com/mkolodny/3taps',
     packages=['threetaps'],
+    install_requires=['requests'],
     license=license,
 )
