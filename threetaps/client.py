@@ -85,7 +85,7 @@ class Threetaps(object):
 
 
     class Search(_Endpoint):
-        """Base class for endpoints."""
+        """3taps Search API endpoints."""
 
         name = 'search'
         url = 'http://search.3taps.com'
