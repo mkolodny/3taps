@@ -3,8 +3,6 @@
 import os
 import sys
 
-import threetaps
-
 try:
     from setuptools import setup
 except ImportError:
@@ -21,7 +19,7 @@ with open('LICENSE') as f:
 
 setup(
     name='threetaps',
-    version=threetaps.__version__,
+    version='0.1.1',
     description='3taps API Client.',
     long_description=readme,
     author='Michael Kolodny',
