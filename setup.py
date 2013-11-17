@@ -26,6 +26,8 @@ setup(
     author_email='michaelckolodny@gmail.com',
     url='https://github.com/mkolodny/3taps',
     packages=['threetaps'],
+    package_data={'': ['LICENSE']},
+    package_dir={'threetaps': 'threetaps'},
     install_requires=['requests'],
     license=license,
 )
