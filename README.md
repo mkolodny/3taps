@@ -10,8 +10,7 @@ Dependencies:
 - requests
 
 
-Installation
-____________
+## Installation
 
 Install via pip:
 
@@ -24,16 +23,14 @@ Install from source:
     $ python setup.py install
 
 
-Usage
-_____
+## Usage
 
 Instantiating a client:
 
     client = threetaps.Threetaps(auth_token='YOUR_API_KEY')
 
 
-Examples
-________
+## Examples
 
 ### [Reference](http://docs.3taps.com/reference_api.html)
 
@@ -58,6 +55,7 @@ ________
     client.reference.location_lookup('CAN-YUL')
 
 
+
 ### [Search](http://docs.3taps.com/reference_api.html)
 
 #### Search
@@ -67,6 +65,7 @@ ________
 #### Count
 
     client.search.count('category', params={'status': 'for_sale'})
+
 
 
 ### [Polling](http://docs.3taps.com/polling_api.html)
