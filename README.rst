@@ -40,7 +40,6 @@ Examples
 --------
 
 `Reference`_
-.. _`Reference`: http://docs.3taps.com/reference_api.html
 
 Sources:
 
@@ -72,10 +71,11 @@ Locations Lookup:
 
     >>> client.reference.location_lookup('CAN-YUL')
 
+.. _Reference: http://docs.3taps.com/reference_api.html
+
 ----
 
 `Search`_
-.. _`Search`: http://docs.3taps.com/search_api.html
 
 Search:
 
@@ -89,10 +89,11 @@ Count:
 
     >>> client.search.count('category', params={'status': 'for_sale'})
 
+.. _Search: http://docs.3taps.com/search_api.html
+
 ----
 
 `Polling`_
-.. _`Polling`: http://docs.3taps.com/polling_api.html
 
 Anchor:
 
@@ -106,3 +107,5 @@ Poll:
 .. code-block:: pycon
 
     >>> client.polling.poll(params={'anchor': '306785687'})
+
+.. _Polling: http://docs.3taps.com/polling_api.html
