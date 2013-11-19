@@ -110,16 +110,16 @@ class Threetaps(object):
         name = 'polling'
         url = 'http://polling.3taps.com'
 
-        def anchor(self, utc_date):
-            """Get the value to use to find postings since `utc_date`.
+        def anchor(self, utc_dt):
+            """Get the value to use to find postings since `utc_dt`.
 
-            :param dt: UTC Datetime <datetime> object. Start-time for finding
+            :param utc_dt: Datetime <datetime> object. Start-time for finding
                 postings.
             """
             url = urljoin(self.url, 'anchor')
 
             # set anchor timestamp
-            params = {'timestamp': self._timestamp_from_utc(utc_date)}
+            params = {'timestamp': self._timestamp_from_utc(utc_dt)}
 
             return self._GET(url, params)
 
@@ -129,12 +129,12 @@ class Threetaps(object):
             url = urljoin(self.url, 'poll')
             return self._GET(url, params)
 
-        def _timestamp_from_utc(self, utc_date):
-            """Convert a UTC date object to a UTC timestamp.
+        def _timestamp_from_utc(self, utc_dt):
+            """Convert a UTC datetime object to a UTC timestamp.
             Returns an Integer representing the number of seconds since the
             epoch.
             """
-            return calendar.timegm(utc_date.timetuple())
+            return calendar.timegm(utc_dt.timetuple())
 
 
     class Reference(_Endpoint):
