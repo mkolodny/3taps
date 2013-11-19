@@ -267,7 +267,7 @@ class ReferenceTestCase(BaseTestCase):
 
     def test_reference_location_lookup_defaults(self):
         # mock the request
-        self.register_uri('location/lookup')
+        self.register_uri('locations/lookup')
 
         code = 'oaiwjef'
         response = self.api.reference.location_lookup(code)

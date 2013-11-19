@@ -174,4 +174,4 @@ class Threetaps(object):
 
             :param code: String. 3taps location code.
             """
-            return self._GET('location/lookup', {'code': code})
+            return self._GET('locations/lookup', {'code': code})
