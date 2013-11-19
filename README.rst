@@ -35,7 +35,7 @@ Instantiating a client:
 
 .. code-block:: bash
 
-    >>> client = threetaps.Threetaps(auth_token='YOUR_API_KEY')
+    >>> client = threetaps.Threetaps('YOUR_API_KEY')
 
 
 Examples
