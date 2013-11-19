@@ -1,1 +1,1 @@
-include README.rst LICENSE test_threetaps.py requirements.txt
+include README.md LICENSE test_threetaps.py requirements.txt
