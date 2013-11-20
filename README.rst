@@ -41,7 +41,7 @@ Instantiating a client:
 Examples
 --------
 
-**`Reference`_**
+`|Reference|`_
 
 Sources:
 
@@ -73,11 +73,12 @@ Locations Lookup:
 
     >>> client.reference.location_lookup('CAN-YUL')
 
+.. |Reference| replace:: **Reference**
 .. _Reference: http://docs.3taps.com/reference_api.html
 
 ----
 
-**`Search`_**
+`|Search|`_
 
 Search:
 
@@ -91,11 +92,12 @@ Count:
 
     >>> client.search.count('category', params={'status': 'for_sale'})
 
+.. |Search| replace:: **Search**
 .. _Search: http://docs.3taps.com/search_api.html
 
 ----
 
-**`Polling`_**
+`|Polling|`_
 
 Anchor:
 
@@ -110,4 +112,5 @@ Poll:
 
     >>> client.polling.poll(params={'anchor': '306785687'})
 
+.. |Polling| replace:: **Polling**
 .. _Polling: http://docs.3taps.com/polling_api.html
