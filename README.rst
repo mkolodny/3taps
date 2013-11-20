@@ -41,7 +41,7 @@ Instantiating a client:
 Examples
 --------
 
-`|Reference|`_
+|Reference|_
 
 Sources:
 
@@ -78,7 +78,7 @@ Locations Lookup:
 
 ----
 
-`|Search|`_
+|Search|_
 
 Search:
 
@@ -97,7 +97,7 @@ Count:
 
 ----
 
-`|Polling|`_
+|Polling|_
 
 Anchor:
 
