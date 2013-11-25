@@ -77,7 +77,7 @@ class RequesterTestCase(BaseTestCase):
                                status=status)
 
         response = self.api.requester.GET(self.uri, self.params)
-        self.assertEqual(response['success'], False)
+        self.assertFalse(response['success'])
         self.assertIn('error', response)
 
     def test_response_not_json(self):
@@ -87,7 +87,7 @@ class RequesterTestCase(BaseTestCase):
                                body='<html></html>')
 
         response = self.api.requester.GET(self.uri, self.params)
-        self.assertEqual(response['success'], False)
+        self.assertFalse(response['success'])
         self.assertIn('error', response)
 
 class SearchTestCase(BaseTestCase):
