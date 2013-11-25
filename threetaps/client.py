@@ -60,11 +60,11 @@ class Threetaps(object):
             response = requests.get(url, params=params)
             if response.status_code != 200:
                 error = 'HTTPError: {}'.format(response.status_code)
-                return {'error': error}
+                return {'success': False, 'error': error}
             try:
                 return response.json()
             except ValueError as err:
-                return {'error': err}
+                return {'success': False, 'error': err}
 
 
     class _Endpoint(object):
