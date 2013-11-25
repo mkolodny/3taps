@@ -3,7 +3,7 @@
 
 A Python interface for the 3taps API.
 
-The goal of this library is to map 3taps' endpoints one-to-one with clean, Pythonic methods. It only handles raw data, allowing you to define your own models.
+The goal of this library is to map 3taps' endpoints one-to-one. Calls to 3taps are made with clean, Pythonic methods. It only handles raw data, allowing you to define your own models.
 
 Dependencies:
 
