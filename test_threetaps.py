@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# (c) 2013 Michael Kolodny
+# (c) 2014 Michael Kolodny
 
 """Tests for threetaps."""
 
@@ -14,7 +14,6 @@ try:
 except ImportError:
     from urllib.parse import urljoin
 import httpretty
-
 import threetaps
 
 AUTH_TOKEN = 'AUTH_TOKEN'
