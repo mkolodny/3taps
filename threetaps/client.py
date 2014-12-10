@@ -100,7 +100,7 @@ class Threetaps(object):
 
             :param field: String. Field to use for calculating the count.
             """
-            params['count'] = field
+            params = dict({'count': field}, **params)
             return self._GET(self.url, params)
 
 
