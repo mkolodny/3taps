@@ -165,7 +165,7 @@ class Threetaps(object):
                 Options: 'country', 'state', 'metro', 'region', 'county',
                          'city', 'locality', 'zipcode'.
             """
-            params['level'] = level
+            params = dict({'level': level}, **params)
             return self._GET('locations', params)
 
         def location_lookup(self, code):
