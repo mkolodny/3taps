@@ -56,7 +56,7 @@ class Threetaps(object):
             :param url: String. 3taps endpoint.
             :param params: Dictionary. Params to send to 3taps.
             """
-            params['auth_token'] = self.auth_token
+            params = dict({'auth_token': self.auth_token}, **params)
             response = requests.get(url, params=params)
             if response.status_code != 200:
                 error = 'HTTPError: {}'.format(response.status_code)
