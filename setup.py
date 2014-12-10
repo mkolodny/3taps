@@ -19,7 +19,7 @@ with open('LICENSE') as f:
 
 setup(
     name='threetaps',
-    version='0.2.1',
+    version='0.2.2',
     description='3taps API Client.',
     long_description=readme,
     author='Michael Kolodny',
